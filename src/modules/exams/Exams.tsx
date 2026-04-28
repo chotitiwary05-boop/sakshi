@@ -51,14 +51,10 @@ export default function Exams() {
           <Input placeholder="Search exams..." className="pl-10" />
         </div>
         <Dialog>
-          <DialogTrigger
-            render={
-              <Button className="gap-2">
-                <Plus className="w-4 h-4" />
-                Create Test
-              </Button>
-            }
-          />
+          <DialogTrigger render={<Button className="gap-2" />}>
+            <Plus className="w-4 h-4" />
+            Create Test
+          </DialogTrigger>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
               <DialogTitle>Create New Examination</DialogTitle>

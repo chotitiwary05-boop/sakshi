@@ -1,12 +1,23 @@
-import { AdmissionLead, Batch, Course, Student, Teacher, Transaction, User, VideoLecture } from "../types";
+import { AdmissionLead, Batch, Course, Student, Teacher, Transaction, User, VideoLecture, University, Branch, AdminAccount } from "../types";
 
 export const MOCK_USER: User = {
   id: '1',
   name: 'Arjun Mehra',
-  email: 'arjun@eduflow.com',
+  email: 'arjun@sakshi.com',
   role: 'admin',
   avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun',
 };
+
+export const MOCK_BRANCHES: Branch[] = [
+  { id: 'br1', name: 'Sakshi Pawai', location: 'Pawai, Panna', code: 'SP01', adminId: '1', status: 'active' },
+  { id: 'br2', name: 'Sakshi Panna', location: 'Panna City', code: 'SP02', adminId: 'aa2', status: 'active' },
+];
+
+export const MOCK_ADMIN_ACCOUNTS: AdminAccount[] = [
+  { id: 'aa1', username: 'admin', password: '123456', role: 'admin', name: 'Arjun Mehra', branchId: 'br1' },
+  { id: 'aa2', username: 'panna_admin', password: 'password123', role: 'admin', name: 'Suresh Kumar', branchId: 'br2' },
+  { id: 'aa3', username: 'staff1', password: 'welcome2024', role: 'staff', name: 'Anjali Sharma', branchId: 'br1' },
+];
 
 export const MOCK_COURSES: Course[] = [
   { id: 'c1', name: 'D.C.A.', description: 'Diploma in Computer Applications (Eligibility: 12th)', duration: '1 Year', fees: 15000 },
@@ -64,4 +75,10 @@ export const MOCK_TRANSACTIONS: Transaction[] = [
   { id: 'tr1', type: 'income', amount: 12000, category: 'Fees', description: 'Priya Patel - Full Payment', date: '2024-03-01' },
   { id: 'tr2', type: 'expense', amount: 5000, category: 'Rent', description: 'March Rent', date: '2024-03-05' },
   { id: 'tr3', type: 'income', amount: 8000, category: 'Fees', description: 'Rahul Sharma - Installment', date: '2024-03-07' },
+];
+
+export const MOCK_UNIVERSITIES: University[] = [
+  { id: 'u1', name: 'Makhanlal Chaturvedi National University of Journalism & Communication, Bhopal', address: 'Bhopal' },
+  { id: 'u2', name: 'Rani Durgavati Vishwavidyalaya, Jabalpur', address: 'Jabalpur' },
+  { id: 'u3', name: 'Maharaja Chhatrasal Bundelkhand University, Chhatarpur', address: 'Chhatarpur' },
 ];

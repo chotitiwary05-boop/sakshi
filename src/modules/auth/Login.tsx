@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Lock, User, AlertCircle } from 'lucide-react';
 
 interface LoginProps {
-  onLogin: (success: boolean) => void;
+  onLogin: (success: boolean, role: string) => void;
 }
 
 export default function Login({ onLogin }: LoginProps) {
@@ -21,11 +21,16 @@ export default function Login({ onLogin }: LoginProps) {
     setIsLoading(true);
 
     // Hardcoded credentials for the admin panel
-    if (username === 'admin' && password === '123456') {
+    if (username === 'sadmin' && password === '12345') {
+       setTimeout(() => {
+        setIsLoading(false);
+        onLogin(true, 'sadmin');
+      }, 500);
+    } else if (username === 'admin' && password === '987654') {
       // Simulate network delay
       setTimeout(() => {
         setIsLoading(false);
-        onLogin(true);
+        onLogin(true, 'admin');
       }, 500);
     } else {
       setTimeout(() => {

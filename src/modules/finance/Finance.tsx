@@ -37,26 +37,34 @@ import { MOCK_TRANSACTIONS } from '@/src/lib/mockData';
 import { cn } from '@/lib/utils';
 
 export default function Finance() {
+  const [isAddTransactionOpen, setIsAddTransactionOpen] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState('');
+
   const totalIncome = MOCK_TRANSACTIONS.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
   const totalExpense = MOCK_TRANSACTIONS.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
   const netProfit = totalIncome - totalExpense;
+
+  const filteredTransactions = MOCK_TRANSACTIONS.filter(t => 
+    t.description.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    t.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
       {/* Finance Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="bg-green-50 border-green-100">
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 py-3 pb-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-700">Total Income</p>
-                <h3 className="text-2xl font-bold text-green-900 mt-1">₹{totalIncome.toLocaleString()}</h3>
+                <p className="text-xs font-medium text-green-700">Total Income</p>
+                <h3 className="text-lg font-black text-green-900 mt-0.5 tracking-tight">₹{totalIncome.toLocaleString()}</h3>
               </div>
-              <div className="p-3 bg-green-100 rounded-xl">
-                <ArrowUpCircle className="w-6 h-6 text-green-600" />
+              <div className="p-2 bg-green-100 rounded-lg">
+                <ArrowUpCircle className="w-5 h-5 text-green-600" />
               </div>
             </div>
-            <div className="mt-4 flex items-center text-xs text-green-700">
+            <div className="mt-3 flex items-center text-[10px] text-green-700">
               <TrendingUp className="w-3 h-3 mr-1" />
               <span>+12.5% from last month</span>
             </div>
@@ -64,17 +72,17 @@ export default function Finance() {
         </Card>
 
         <Card className="bg-red-50 border-red-100">
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 py-3 pb-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-red-700">Total Expenses</p>
-                <h3 className="text-2xl font-bold text-red-900 mt-1">₹{totalExpense.toLocaleString()}</h3>
+                <p className="text-xs font-medium text-red-700">Total Expenses</p>
+                <h3 className="text-lg font-black text-red-900 mt-0.5 tracking-tight">₹{totalExpense.toLocaleString()}</h3>
               </div>
-              <div className="p-3 bg-red-100 rounded-xl">
-                <ArrowDownCircle className="w-6 h-6 text-red-600" />
+              <div className="p-2 bg-red-100 rounded-lg">
+                <ArrowDownCircle className="w-5 h-5 text-red-600" />
               </div>
             </div>
-            <div className="mt-4 flex items-center text-xs text-red-700">
+            <div className="mt-3 flex items-center text-[10px] text-red-700">
               <TrendingDown className="w-3 h-3 mr-1" />
               <span>+5.2% from last month</span>
             </div>
@@ -82,17 +90,17 @@ export default function Finance() {
         </Card>
 
         <Card className="bg-primary text-primary-foreground">
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 py-3 pb-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium opacity-80">Net Profit</p>
-                <h3 className="text-2xl font-bold mt-1">₹{netProfit.toLocaleString()}</h3>
+                <p className="text-xs font-medium opacity-80">Net Profit</p>
+                <h3 className="text-lg font-black mt-0.5 tracking-tight">₹{netProfit.toLocaleString()}</h3>
               </div>
-              <div className="p-3 bg-white/10 rounded-xl">
-                <Wallet className="w-6 h-6" />
+              <div className="p-2 bg-white/10 rounded-lg">
+                <Wallet className="w-5 h-5" />
               </div>
             </div>
-            <div className="mt-4 flex items-center text-xs opacity-80">
+            <div className="mt-3 flex items-center text-[10px] opacity-80">
               <TrendingUp className="w-3 h-3 mr-1" />
               <span>Healthy cash flow</span>
             </div>
@@ -103,7 +111,12 @@ export default function Finance() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input placeholder="Search transactions..." className="pl-10" />
+          <Input 
+            placeholder="Search transactions by category or desc..." 
+            className="pl-10" 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" className="gap-2">
@@ -111,15 +124,11 @@ export default function Finance() {
             Category
           </Button>
           
-          <Dialog>
-            <DialogTrigger
-              render={
-                <Button className="gap-2">
-                  <Plus className="w-4 h-4" />
-                  Add Transaction
-                </Button>
-              }
-            />
+          <Dialog open={isAddTransactionOpen} onOpenChange={setIsAddTransactionOpen}>
+            <DialogTrigger render={<Button className="gap-2" />}>
+              <Plus className="w-4 h-4" />
+              Add Transaction
+            </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Add New Transaction</DialogTitle>
@@ -170,8 +179,8 @@ export default function Finance() {
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline">Cancel</Button>
-                <Button>Save Transaction</Button>
+                <Button variant="outline" onClick={() => setIsAddTransactionOpen(false)}>Cancel</Button>
+                <Button onClick={() => setIsAddTransactionOpen(false)}>Save Transaction</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
@@ -203,33 +212,41 @@ export default function Finance() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {MOCK_TRANSACTIONS.map((transaction) => (
-                <TableRow key={transaction.id}>
-                  <TableCell className="text-sm text-muted-foreground">{transaction.date}</TableCell>
-                  <TableCell className="font-medium">{transaction.description}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">{transaction.category}</Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      {transaction.type === 'income' ? (
-                        <ArrowUpCircle className="w-4 h-4 text-green-600" />
-                      ) : (
-                        <ArrowDownCircle className="w-4 h-4 text-red-600" />
-                      )}
-                      <span className={transaction.type === 'income' ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
-                        {transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell className={cn(
-                    "text-right font-bold",
-                    transaction.type === 'income' ? "text-green-700" : "text-red-700"
-                  )}>
-                    {transaction.type === 'income' ? '+' : '-'} ₹{transaction.amount.toLocaleString()}
+              {filteredTransactions.length > 0 ? (
+                filteredTransactions.map((transaction) => (
+                  <TableRow key={transaction.id}>
+                    <TableCell className="text-sm text-muted-foreground">{transaction.date}</TableCell>
+                    <TableCell className="font-medium">{transaction.description}</TableCell>
+                    <TableCell>
+                      <Badge variant="secondary">{transaction.category}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        {transaction.type === 'income' ? (
+                          <ArrowUpCircle className="w-4 h-4 text-green-600" />
+                        ) : (
+                          <ArrowDownCircle className="w-4 h-4 text-red-600" />
+                        )}
+                        <span className={transaction.type === 'income' ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
+                          {transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className={cn(
+                      "text-right font-bold",
+                      transaction.type === 'income' ? "text-green-700" : "text-red-700"
+                    )}>
+                      {transaction.type === 'income' ? '+' : '-'} ₹{transaction.amount.toLocaleString()}
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="h-24 text-center">
+                    No transactions found matching your search.
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </CardContent>

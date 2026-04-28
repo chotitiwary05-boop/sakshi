@@ -5,7 +5,10 @@ import {
   Clock, 
   TrendingUp,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  Globe,
+  Layout,
+  ExternalLink
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -55,8 +58,8 @@ const StatCard = ({ title, value, icon: Icon, trend, description }: StatCardProp
     <CardContent className="pt-6">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
-          <h3 className="text-2xl font-bold mt-1">{value}</h3>
+          <p className="text-xs font-medium text-muted-foreground">{title}</p>
+          <h3 className="text-xl font-black mt-1 text-slate-800 tracking-tight">{value}</h3>
         </div>
         <div className="p-3 bg-primary/10 rounded-xl">
           <Icon className="w-6 h-6 text-primary" />
@@ -78,7 +81,7 @@ const StatCard = ({ title, value, icon: Icon, trend, description }: StatCardProp
   </Card>
 );
 
-export default function Dashboard() {
+export default function Dashboard({ setActiveTab }: { setActiveTab?: (tab: string) => void }) {
   const totalStudents = MOCK_STUDENTS.length * 10; // Mocking more
   const totalRevenue = MOCK_TRANSACTIONS.reduce((acc, curr) => curr.type === 'income' ? acc + curr.amount : acc, 0);
   const activeBatches = MOCK_BATCHES.length;
@@ -116,6 +119,41 @@ export default function Dashboard() {
           description="currently running"
         />
       </div>
+
+      {/* Website Manager Access Banner */}
+      <Card className="border-none bg-gradient-to-r from-slate-900 to-slate-800 text-white overflow-hidden relative group">
+        <div className="absolute top-0 right-0 p-8 opacity-10 scale-150 rotate-12 group-hover:scale-175 transition-transform duration-500 pointer-events-none">
+           <Globe className="w-32 h-32" />
+        </div>
+        <CardContent className="p-5 md:p-6 relative z-10 flex flex-col xl:flex-row items-center xl:items-start justify-between gap-6">
+          <div className="space-y-1 text-center xl:text-left">
+            <h3 className="text-lg md:text-xl font-bold flex items-center justify-center xl:justify-start gap-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              Website Manager Panel
+            </h3>
+            <p className="text-slate-400 font-medium max-w-xl text-xs md:text-sm">
+              Control your public-facing institute website. Update courses, announcements, hero sliders, and gallery sections directly from this dedicated panel.
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-3 w-full xl:w-auto">
+             <Button 
+               variant="outline" 
+               className="flex-1 sm:flex-none bg-white/10 hover:bg-white/20 border-white/20 text-white font-bold px-4 h-10 gap-2 text-[10px] md:text-xs"
+               onClick={() => window.open('/', '_blank')}
+             >
+                <ExternalLink className="w-3.5 h-3.5" />
+                Live Site
+             </Button>
+             <Button 
+               className="flex-1 sm:flex-none bg-primary hover:bg-primary/90 text-white font-black px-6 h-10 gap-2 shadow-2xl shadow-primary/20 text-[10px] md:text-xs uppercase"
+               onClick={() => setActiveTab?.('website-manager')}
+             >
+                <Layout className="w-3.5 h-3.5" />
+                Open Manager
+             </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

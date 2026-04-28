@@ -7,7 +7,8 @@ import {
   GraduationCap, 
   CheckSquare, 
   FileText,
-  Printer
+  Printer,
+  ChevronDown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,35 +25,196 @@ import {
 } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { MOCK_UNIVERSITIES } from '@/src/lib/mockData';
 
 export default function RegistrationForm() {
+  const [session, setSession] = React.useState('july');
+  const [admissionDate, setAdmissionDate] = React.useState(new Date().toISOString().split('T')[0]);
+  const [sessionYear, setSessionYear] = React.useState('2024-25');
+
+  const SESSION_DEADLINES = {
+    july: {
+      admissionLast: '08-31', // Aug 31
+      sem1: '10-15', // Oct 15
+      sem2: '03-31', // Mar 31
+    },
+    january: {
+      admissionLast: '03-05', // Mar 05
+      sem1: '03-31', // Mar 31
+      sem2: '10-15', // Oct 15
+    }
+  };
+
+  const isAdmissionPastDeadline = React.useMemo(() => {
+    if (!admissionDate) return false;
+    const date = new Date(admissionDate);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const mDayStr = `${month}-${day}`;
+    
+    // For July session, if it's after Aug 31 in the same cycle... 
+    // This is tricky because year matters. But usually we compare day-month.
+    const deadline = SESSION_DEADLINES[session as keyof typeof SESSION_DEADLINES].admissionLast;
+    
+    // Simplistic comparison for UI feedback
+    if (session === 'july') {
+      // If date is between Sep 1 and Dec 31, it's definitely past July session's normal cycle if year matches.
+      // However, usually these are cycle-based.
+      return mDayStr > deadline && mDayStr <= '12-31';
+    } else {
+      // January session: after March 05
+      return mDayStr > deadline && mDayStr <= '06-30';
+    }
+  }, [admissionDate, session]);
+
+  const getExamDates = () => {
+    const deadlines = SESSION_DEADLINES[session as keyof typeof SESSION_DEADLINES];
+    const yearParts = sessionYear.split('-');
+    const startYear = yearParts[0];
+    const nextYear = yearParts[1] ? (startYear.substring(0, 2) + yearParts[1]) : (parseInt(startYear) + 1).toString();
+
+    if (session === 'july') {
+      return {
+        sem1: `15 Oct ${startYear}`,
+        sem2: `31 Mar ${nextYear}`
+      };
+    } else {
+      return {
+        sem1: `31 Mar ${startYear}`,
+        sem2: `15 Oct ${startYear}`
+      };
+    }
+  };
+
+  const examDates = getExamDates();
+
+  const [headerInfo, setHeaderInfo] = React.useState({
+    instituteName: 'Sakshi Computer Center',
+    location: 'PAWAI DIST. PANNA (M.P.)',
+    regNum: '6281',
+    affiliatedTo: 'Makhanlal Chaturvedi National University of Journalism & Communication, Bhopal',
+    formNo: '',
+  });
+
+  const [feesInfo, setFeesInfo] = React.useState({
+    dca: {
+      admission: '4500',
+      sem1: '3500',
+      sem2: '3500',
+      total: '11500'
+    },
+    pgdca: {
+      admission: '5500',
+      sem1: '3500',
+      sem2: '3500',
+      total: '12500'
+    }
+  });
+
+  const [rules, setRules] = React.useState([
+    'विद्यार्थी की उपस्थिति 80 प्रतिशत से कम होने पर परीक्षा फार्म नही भरा जायेगा। जिसके जिम्मेदार छात्र/छात्राये स्वयं होगे।',
+    'उपरोक्त शुल्क निर्धारित समय तक जमा न होने पर परीक्षा फार्म नही भरा जायेगा। जिसके जिम्मेदार छात्र/छात्राये स्वयं होगे।',
+    'छात्र/छात्राओं को संस्थान के नियमो का पालन करना होगा।',
+    'किसी भी स्थिति में प्रवेश और शुल्क वापिस नही की जायेगी।'
+  ]);
+
   return (
     <div className="max-w-4xl mx-auto p-8 bg-white border border-gray-200 rounded-lg shadow-sm">
       {/* Header */}
-      <div className="text-center space-y-2 mb-8">
-        <h1 className="text-2xl font-bold text-primary italic uppercase underline decoration-2 underline-offset-4">Sakshi Computer Center</h1>
-        <p className="text-lg font-bold">PAWAI DIST. PANNA (M.P.)</p>
-        <div className="flex justify-between items-center px-4 mt-4 text-sm font-medium">
-          <span>Form No. <span className="border-b border-black inline-block w-24"></span></span>
-          <span className="text-right">Reg. 6281</span>
+      <div className="text-center space-y-4 mb-8">
+        <div className="space-y-2">
+          <Input 
+            className="text-2xl font-bold text-primary italic uppercase underline decoration-2 underline-offset-4 text-center border-none focus-visible:ring-0 bg-transparent h-auto p-0" 
+            value={headerInfo.instituteName}
+            onChange={(e) => setHeaderInfo({ ...headerInfo, instituteName: e.target.value })}
+          />
+          <Input 
+            className="text-lg font-bold text-center border-none focus-visible:ring-0 bg-transparent h-auto p-0" 
+            value={headerInfo.location}
+            onChange={(e) => setHeaderInfo({ ...headerInfo, location: e.target.value })}
+          />
         </div>
-        <div className="mt-4 border-t-2 border-b-2 border-primary py-2">
+        <div className="flex justify-between items-center px-4 mt-4 text-sm font-medium">
+          <div className="flex items-center gap-2">
+            <span>Form No.</span>
+            <Input 
+              className="border-b border-t-0 border-l-0 border-r-0 border-black rounded-none focus-visible:ring-0 h-6 w-24 p-0 text-center" 
+              value={headerInfo.formNo}
+              onChange={(e) => setHeaderInfo({ ...headerInfo, formNo: e.target.value })}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span>Reg.</span>
+            <Input 
+              className="border-b border-t-0 border-l-0 border-r-0 border-black rounded-none focus-visible:ring-0 h-6 w-24 p-0 text-center" 
+              value={headerInfo.regNum}
+              onChange={(e) => setHeaderInfo({ ...headerInfo, regNum: e.target.value })}
+            />
+          </div>
+        </div>
+        <div className="mt-4 border-t-2 border-b-2 border-primary py-2 space-y-1">
           <p className="text-sm font-semibold">Affiliated By :</p>
-          <p className="font-bold text-primary">Makhanlal Chaturvedi National University of Journalism & Communication, Bhopal</p>
+          <div className="flex justify-center">
+            <Select 
+              value={headerInfo.affiliatedTo}
+              onValueChange={(value) => setHeaderInfo({ ...headerInfo, affiliatedTo: value })}
+            >
+              <SelectTrigger className="w-full max-w-2xl font-bold text-primary text-center border-none focus:ring-0 bg-transparent h-auto p-0 shadow-none">
+                <SelectValue placeholder="Select University" />
+              </SelectTrigger>
+              <SelectContent>
+                {MOCK_UNIVERSITIES.map((univ) => (
+                  <SelectItem key={univ.id} value={univ.name}>
+                    <div className="flex flex-col items-start">
+                      <span className="font-bold">{univ.name}</span>
+                      <span className="text-xs text-muted-foreground">{univ.address}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-8 text-sm font-medium">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 text-sm font-medium">
         <div className="space-y-1">
-          <Label>Admission at session</Label>
-          <Input placeholder="2024-25" />
+          <Label>Session Type</Label>
+          <Select value={session} onValueChange={setSession}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Session" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="july">July Session</SelectItem>
+              <SelectItem value="january">January Session</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        <div className="flex items-center justify-center pt-6">
+        <div className="space-y-1">
+          <Label>Session Year</Label>
+          <Input placeholder="2024-25" value={sessionYear} onChange={(e) => setSessionYear(e.target.value)} />
+        </div>
+        <div className="flex items-center justify-center pt-6 md:col-start-2 md:col-end-4 md:row-start-1">
           <h2 className="text-xl font-bold uppercase tracking-widest border-2 border-black px-4 py-1">Admission Form</h2>
         </div>
         <div className="space-y-1">
           <Label>Date of Admission</Label>
-          <Input type="date" />
+          <Input 
+            type="date" 
+            value={admissionDate} 
+            onChange={(e) => setAdmissionDate(e.target.value)}
+            className={isAdmissionPastDeadline ? "border-red-500 bg-red-50" : ""}
+          />
+          {isAdmissionPastDeadline && (
+            <p className="text-[10px] text-red-600 font-bold">Past {session === 'july' ? '31 Aug' : '05 Mar'} Deadline!</p>
+          )}
         </div>
       </div>
 
@@ -288,34 +450,84 @@ export default function RegistrationForm() {
           <div className="grid grid-cols-3 gap-8 text-sm font-bold">
             <div className="space-y-2">
               <p className="underline underline-offset-4">कोर्स–</p>
-              <p>प्रवेश शुल्क प्रवेश समय –</p>
-              <p>प्रथम सेमेस्टर परीक्षा फार्म के समय –</p>
-              <p>द्वितीय सेमेस्टर परीक्षा फार्म के समय –</p>
-              <p className="text-base">कुल शुल्क –</p>
+              <div className="h-10 flex flex-col justify-center">
+                <p className="text-[10px] text-muted-foreground uppercase leading-none">Admission Last</p>
+                <p className="font-bold text-xs">{session === 'july' ? '31 Aug' : '05 Mar'}</p>
+              </div>
+              <div className="h-10 flex flex-col justify-center">
+                <p className="text-[10px] text-muted-foreground uppercase leading-none">1st Sem Exam Last</p>
+                <p className="font-bold text-xs">{examDates.sem1}</p>
+              </div>
+              <div className="h-10 flex flex-col justify-center">
+                <p className="text-[10px] text-muted-foreground uppercase leading-none">2nd Sem Exam Last</p>
+                <p className="font-bold text-xs">{examDates.sem2}</p>
+              </div>
+              <p className="text-base h-8 flex items-center">कुल शुल्क –</p>
             </div>
             <div className="text-center space-y-2">
-              <p>डी. सी. ए.</p>
-              <p>4500</p>
-              <p>3500</p>
-              <p>3500</p>
-              <p className="text-base underline">11500</p>
+              <p className="h-6">डी. सी. ए.</p>
+              <Input 
+                className="h-8 text-center border-none bg-transparent focus-visible:ring-0 p-0" 
+                value={feesInfo.dca.admission}
+                onChange={(e) => setFeesInfo({ ...feesInfo, dca: { ...feesInfo.dca, admission: e.target.value } })}
+              />
+              <Input 
+                className="h-8 text-center border-none bg-transparent focus-visible:ring-0 p-0" 
+                value={feesInfo.dca.sem1}
+                onChange={(e) => setFeesInfo({ ...feesInfo, dca: { ...feesInfo.dca, sem1: e.target.value } })}
+              />
+              <Input 
+                className="h-8 text-center border-none bg-transparent focus-visible:ring-0 p-0" 
+                value={feesInfo.dca.sem2}
+                onChange={(e) => setFeesInfo({ ...feesInfo, dca: { ...feesInfo.dca, sem2: e.target.value } })}
+              />
+              <Input 
+                className="text-base underline h-8 text-center border-none bg-transparent focus-visible:ring-0 p-0 font-bold" 
+                value={feesInfo.dca.total}
+                onChange={(e) => setFeesInfo({ ...feesInfo, dca: { ...feesInfo.dca, total: e.target.value } })}
+              />
             </div>
             <div className="text-center space-y-2">
-              <p>पी. जी. डी. सी. ए.</p>
-              <p>5500</p>
-              <p>3500</p>
-              <p>3500</p>
-              <p className="text-base underline">12500</p>
+              <p className="h-6">पी. जी. डी. सी. ए.</p>
+              <Input 
+                className="h-8 text-center border-none bg-transparent focus-visible:ring-0 p-0" 
+                value={feesInfo.pgdca.admission}
+                onChange={(e) => setFeesInfo({ ...feesInfo, pgdca: { ...feesInfo.pgdca, admission: e.target.value } })}
+              />
+              <Input 
+                className="h-8 text-center border-none bg-transparent focus-visible:ring-0 p-0" 
+                value={feesInfo.pgdca.sem1}
+                onChange={(e) => setFeesInfo({ ...feesInfo, pgdca: { ...feesInfo.pgdca, sem1: e.target.value } })}
+              />
+              <Input 
+                className="h-8 text-center border-none bg-transparent focus-visible:ring-0 p-0" 
+                value={feesInfo.pgdca.sem2}
+                onChange={(e) => setFeesInfo({ ...feesInfo, pgdca: { ...feesInfo.pgdca, sem2: e.target.value } })}
+              />
+              <Input 
+                className="text-base underline h-8 text-center border-none bg-transparent focus-visible:ring-0 p-0 font-bold" 
+                value={feesInfo.pgdca.total}
+                onChange={(e) => setFeesInfo({ ...feesInfo, pgdca: { ...feesInfo.pgdca, total: e.target.value } })}
+              />
             </div>
           </div>
 
           <div className="space-y-2 pt-4">
             <p className="font-bold underline">नियम–</p>
             <ol className="list-decimal pl-5 space-y-1 text-sm font-medium">
-              <li>विद्यार्थी की उपस्थिति 80 प्रतिशत से कम होने पर परीक्षा फार्म नही भरा जायेगा। जिसके जिम्मेदार छात्र/छात्राये स्वयं होगे।</li>
-              <li>उपरोक्त शुल्क निर्धारित समय तक जमा न होने पर परीक्षा फार्म नही भरा जायेगा। जिसके जिम्मेदार छात्र/छात्राये स्वयं होगे।</li>
-              <li>छात्र/छात्राओं को संस्थान के नियमो का पालन करना होगा।</li>
-              <li>किसी भी स्थिति में प्रवेश और शुल्क वापिस नही की जायेगी।</li>
+              {rules.map((rule, idx) => (
+                <li key={idx}>
+                  <Input 
+                    className="h-auto py-1 border-none bg-transparent focus-visible:ring-0 p-0 w-full text-sm font-medium" 
+                    value={rule}
+                    onChange={(e) => {
+                      const newRules = [...rules];
+                      newRules[idx] = e.target.value;
+                      setRules(newRules);
+                    }}
+                  />
+                </li>
+              ))}
             </ol>
           </div>
         </div>
@@ -338,13 +550,22 @@ export default function RegistrationForm() {
         </div>
 
         {/* Declaration */}
-        <div className="space-y-4 pt-6">
+        <div className="space-y-4 pt-6 text-[#4A3728]">
           <p className="font-extrabold uppercase text-sm border-b border-black inline-block">Declaration</p>
-          <p className="text-sm leading-relaxed text-justify italic font-medium">
-            Myself <span className="border-b border-black inline-block w-48 mx-1"></span> (S/O)(D/O) Mr <span className="border-b border-black inline-block w-48 mx-1"></span> 
+          <div className="text-sm leading-relaxed text-justify italic font-medium flex flex-wrap items-center gap-1">
+            Myself 
+            <Input 
+              className="border-b border-t-0 border-l-0 border-r-0 border-black rounded-none focus-visible:ring-0 h-6 w-48 p-0 italic text-center" 
+              placeholder="Student Name"
+            />
+            (S/O)(D/O) Mr 
+            <Input 
+              className="border-b border-t-0 border-l-0 border-r-0 border-black rounded-none focus-visible:ring-0 h-6 w-48 p-0 italic text-center" 
+              placeholder="Father's Name"
+            />
             Hereby declare all the information this form are correct to the best of my knowledge and belief Declare that l follow all rules and regulation of institute. 
             If I break any rules of institute then institute can take decision against me and I follow all decision take by institute.
-          </p>
+          </div>
         </div>
 
         {/* Final Signatures */}

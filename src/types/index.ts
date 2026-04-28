@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'staff' | 'teacher' | 'student' | 'parent';
+export type UserRole = 'sadmin' | 'admin' | 'staff' | 'teacher' | 'student' | 'parent';
 
 export interface User {
   id: string;
@@ -7,6 +7,24 @@ export interface User {
   role: UserRole;
   avatar?: string;
   phone?: string;
+}
+
+export interface Branch {
+  id: string;
+  name: string;
+  location: string;
+  code: string;
+  adminId: string;
+  status: 'active' | 'inactive';
+}
+
+export interface AdminAccount {
+  id: string;
+  username: string;
+  password: string;
+  role: 'admin' | 'staff';
+  name: string;
+  branchId: string;
 }
 
 export interface Student extends User {
@@ -78,4 +96,10 @@ export interface Transaction {
   category: string;
   description: string;
   date: string;
+}
+
+export interface University {
+  id: string;
+  name: string;
+  address: string;
 }

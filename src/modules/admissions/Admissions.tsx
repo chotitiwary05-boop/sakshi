@@ -11,7 +11,9 @@ import {
   XCircle,
   UserCheck,
   Printer,
-  ChevronLeft
+  ChevronLeft,
+  Info,
+  ChevronRight
 } from 'lucide-react';
 import { 
   Table, 
@@ -57,6 +59,7 @@ export default function Admissions() {
   const [view, setView] = React.useState<'leads' | 'registration'>('leads');
   const [leads, setLeads] = React.useState<AdmissionLead[]>(MOCK_LEADS);
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [isAddLeadOpen, setIsAddLeadOpen] = React.useState(false);
 
   if (view === 'registration') {
     return (
@@ -76,42 +79,42 @@ export default function Admissions() {
     );
   }
 
-  const filteredLeads = leads.filter(lead => 
-    lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lead.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lead.phone.includes(searchTerm)
-  );
+  const filteredLeads = leads.filter(lead => {
+    const course = MOCK_COURSES.find(c => c.id === lead.courseId);
+    return (
+      lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.phone.includes(searchTerm) ||
+      course?.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input 
-            placeholder="Search leads by name, email or phone..." 
-            className="pl-10"
+            placeholder="Search leads..." 
+            className="pl-10 h-10 text-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="flex items-center gap-3">
-          <Button variant="outline" className="gap-2">
-            <Filter className="w-4 h-4" />
+        <div className="flex items-center gap-2">
+          <Button variant="outline" className="gap-2 h-10 text-sm">
+            <Filter className="w-3.5 h-3.5" />
             Filter
           </Button>
-            <Button className="gap-2" onClick={() => setView('registration')}>
-              <Plus className="w-4 h-4" />
+            <Button className="gap-2 h-10 text-sm font-bold" onClick={() => setView('registration')}>
+              <Plus className="w-3.5 h-3.5" />
               New Registration
             </Button>
-            <Dialog>
-            <DialogTrigger
-              render={
-                <Button className="gap-2">
-                  <Plus className="w-4 h-4" />
-                  Add Lead
-                </Button>
-              }
-            />
+            <Dialog open={isAddLeadOpen} onOpenChange={setIsAddLeadOpen}>
+            <DialogTrigger render={<Button className="gap-2 h-10 text-sm font-bold" />}>
+                <Plus className="w-3.5 h-3.5" />
+                Add Lead
+            </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Add New Admission Lead</DialogTitle>
@@ -147,13 +150,68 @@ export default function Admissions() {
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline">Cancel</Button>
-                <Button>Save Lead</Button>
+                <Button variant="outline" onClick={() => setIsAddLeadOpen(false)}>Cancel</Button>
+                <Button onClick={() => setIsAddLeadOpen(false)}>Save Lead</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
         </div>
       </div>
+
+      {/* Deadlines Reference Bar */}
+      <Card className="bg-primary/5 border-primary/20 overflow-hidden">
+        <CardHeader className="py-2 pb-0 flex flex-row items-center justify-between space-y-0">
+          <CardDescription className="text-[10px] font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+            <Info className="w-3 h-3" />
+            Active Session Deadlines
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="py-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* July Session */}
+            <div className="flex items-center gap-4">
+              <div className="p-2 bg-[#4A3728]/10 rounded-lg shrink-0">
+                <span className="text-[#4A3728] font-bold text-xs uppercase">July</span>
+              </div>
+              <div className="grid grid-cols-3 gap-x-2 sm:gap-x-6 flex-1 text-[10px]">
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground">Admission Last</span>
+                  <span className="font-bold text-xs uppercase">31 Aug</span>
+                </div>
+                <div className="flex flex-col border-l pl-4">
+                  <span className="text-muted-foreground">1st Sem Exam Last</span>
+                  <span className="font-bold text-xs uppercase">15 Oct</span>
+                </div>
+                <div className="flex flex-col border-l pl-4">
+                  <span className="text-muted-foreground">2nd Sem Exam Last</span>
+                  <span className="font-bold text-xs uppercase">31 Mar</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Jan Session */}
+            <div className="flex items-center gap-4 border-l pl-6 border-dashed">
+              <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                <span className="text-primary font-bold text-xs uppercase">Jan</span>
+              </div>
+              <div className="grid grid-cols-3 gap-x-2 sm:gap-x-6 flex-1 text-[10px]">
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground">Admission Last</span>
+                  <span className="font-bold text-xs uppercase">05 Mar</span>
+                </div>
+                <div className="flex flex-col border-l pl-4">
+                  <span className="text-muted-foreground">1st Sem Exam Last</span>
+                  <span className="font-bold text-xs uppercase">31 Mar</span>
+                </div>
+                <div className="flex flex-col border-l pl-4">
+                  <span className="text-muted-foreground">2nd Sem Exam Last</span>
+                  <span className="font-bold text-xs uppercase">15 Oct</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader className="pb-0">
@@ -203,13 +261,9 @@ export default function Admissions() {
                     <TableCell className="text-sm text-muted-foreground">{lead.date}</TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
-                        <DropdownMenuTrigger
-                          render={
-                            <Button variant="ghost" size="icon">
-                              <MoreVertical className="w-4 h-4" />
-                            </Button>
-                          }
-                        />
+                        <DropdownMenuTrigger render={<Button variant="ghost" size="icon" />}>
+                          <MoreVertical className="w-4 h-4" />
+                        </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem className="gap-2">
                             <Phone className="w-4 h-4" /> Call Lead
