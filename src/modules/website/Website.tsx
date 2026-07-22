@@ -771,7 +771,7 @@ function ContactSection({ section }: { section: WebsiteSection }) {
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-[9px] md:text-xs font-bold uppercase tracking-widest opacity-60">Email</p>
-                  <p className="text-base md:text-xl font-bold truncate">info@saathicomputer.com</p>
+                  <p className="text-base md:text-xl font-bold truncate">info@sakshicomputer.com</p>
                 </div>
               </div>
               <div className="flex items-center gap-4 group">
@@ -780,7 +780,7 @@ function ContactSection({ section }: { section: WebsiteSection }) {
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-[9px] md:text-xs font-bold uppercase tracking-widest opacity-60">Website</p>
-                  <p className="text-lg md:text-xl font-bold">saathicomputer.com</p>
+                  <p className="text-lg md:text-xl font-bold">sakshicomputer.com</p>
                 </div>
               </div>
             </div>
@@ -810,7 +810,7 @@ function ContactSection({ section }: { section: WebsiteSection }) {
               <div className="p-5 md:p-6 bg-white rounded-2xl shadow-lg border border-slate-100 text-left w-full max-w-sm mb-6 md:mb-8">
                  <p className="text-[10px] md:text-xs font-bold text-primary uppercase tracking-widest mb-1 md:mb-2">Campus Address</p>
                  <p className="text-sm md:text-base font-bold text-slate-800 italic leading-snug">
-                   Saathi Computer Institute (ASI 6281), Near Jain Mandir, Main Road Mohindra, Panna (M.P.)
+                   Sakshi Computer Institute (ASI 6281), Near Jain Mandir, Main Road Mohindra, Panna (M.P.)
                  </p>
               </div>
 

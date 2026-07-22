@@ -3,7 +3,7 @@ import { WebsiteConfig } from './types';
 export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
   header: {
     logo: 'https://img.icons8.com/stencil/100/monitor.png',
-    title: 'Saathi Computer Institute',
+    title: 'Sakshi Computer Institute',
     menu: [
       { label: 'Home', link: '#' },
       { label: 'Director', link: '#director' },
@@ -20,7 +20,7 @@ export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
       id: 'hero-1',
       type: 'hero',
       title: 'Empowering your future with practical computer education',
-      subtitle: 'Join Saathi Computer Institute for career-focused training and technical excellence.',
+      subtitle: 'Join Sakshi Computer Institute for career-focused training and technical excellence.',
       images: ['https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&q=80&w=1200'],
       ctaText: 'Enroll Now',
       ctaLink: '#contact',
@@ -31,7 +31,7 @@ export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
       id: 'director-1',
       type: 'director-message',
       title: 'Director’s Message',
-      subtitle: 'Mr. R. K. Tiwari',
+      subtitle: 'Mr. Santosh Kushwaha',
       content: 'At Sakshi Computer Institute, our mission is to empower students with practical knowledge and industry-relevant skills. We focus on building strong foundations for a successful career in IT and computer education. With experienced faculty and modern infrastructure, we ensure quality education for every student.',
       images: ['https://images.unsplash.com/photo-1519085185758-26987a15998b?auto=format&fit=crop&q=80&w=800'],
       order: 0.2
@@ -41,7 +41,7 @@ export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
       type: 'branches',
       title: 'Our Branches',
       subtitle: 'Visit our nearest campus for admissions and inquiries.',
-      content: 'Mohandra Branch: Saathi Computer Institute, Near Jain Mandir, Main Road Mohindra, Panna (M.P.)\n\nPawai Branch: Saathi Computer Institute, Near Bus Stand, Pawai, Panna (M.P.)',
+      content: 'Mohandra Branch: Sakshi Computer Institute, Near Jain Mandir, Main Road Mohindra, Panna (M.P.)\n\nPawai Branch: Sakshi Computer Institute, Near Bus Stand, Pawai, Panna (M.P.)',
       order: 0.3
     },
     {
@@ -60,7 +60,7 @@ export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
       id: 'about-1',
       type: 'about',
       title: 'Who We Are',
-      subtitle: 'Saathi Computer Institute is dedicated to providing quality computer education that bridges the gap between academic knowledge and practical skills.',
+      subtitle: 'Sakshi Computer Institute is dedicated to providing quality computer education that bridges the gap between academic knowledge and practical skills.',
       content: 'We are affiliated with Makhanlal Chaturvedi National University, ensuring recognized certifications and industry-relevant curriculum. Our goal is to create skilled professionals who are ready to excel in the digital and corporate world.',
       images: ['https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800'],
       order: 1
@@ -111,23 +111,23 @@ export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
     }
   ],
   footer: {
-    about: 'Saathi Computer Institute (Affiliated with MCU). Empowerment through technical skill development since 2012.',
+    about: 'Sakshi Computer Institute (Affiliated with MCU). Empowerment through technical skill development since 2012.',
     contact: {
       phone: '+91 9926654640',
-      email: 'info@saathicomputer.com',
-      address: 'Saathi Computer Institute (ASI 6281), Mohindra, Panna (M.P.)'
+      email: 'info@sakshicomputer.com',
+      address: 'Sakshi Computer Institute (ASI 6281), Mohindra, Panna (M.P.)'
     },
     branches: [
       {
         name: 'Pawai Branch',
         phones: ['9171654640', '9926654640', '9893883172'],
-        address: 'Saathi Computer Institute, Near Bus Stand, Pawai, Panna (M.P.)',
+        address: 'Sakshi Computer Institute, Near Bus Stand, Pawai, Panna (M.P.)',
         image: 'https://images.unsplash.com/photo-1524178232363-1fb28f74b671?auto=format&fit=crop&q=80&w=600'
       },
       {
         name: 'Mohandra Branch',
         phones: ['8770542560', '9926654640', '9893883172'],
-        address: 'Saathi Computer Institute, Near Jain Mandir, Main Road Mohindra, Panna (M.P.)',
+        address: 'Sakshi Computer Institute, Near Jain Mandir, Main Road Mohindra, Panna (M.P.)',
         image: 'https://images.unsplash.com/photo-1544652277-2f3b9c7b4169?auto=format&fit=crop&q=80&w=600'
       }
     ]
