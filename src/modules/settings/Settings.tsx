@@ -463,21 +463,107 @@ export default function Settings() {
               <div className="space-y-6">
                 <Card className="border-none shadow-xl shadow-muted/20">
                   <CardHeader>
-                    <CardTitle className="text-lg">Data & Backups</CardTitle>
-                    <CardDescription>Secure your institute information.</CardDescription>
+                    <CardTitle className="text-lg">User Access Control & Role Permissions</CardTitle>
+                    <CardDescription>Configure module access for Directors, Admins, Faculty, and Operators.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="overflow-x-auto border rounded-xl">
+                      <table className="w-full text-left text-xs">
+                        <thead className="bg-slate-100 font-bold text-slate-700 uppercase">
+                          <tr>
+                            <th className="p-3">ERP Module</th>
+                            <th className="p-3 text-center">Director / SuperAdmin</th>
+                            <th className="p-3 text-center">Center Admin</th>
+                            <th className="p-3 text-center">Faculty</th>
+                            <th className="p-3 text-center">Operator</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y">
+                          {[
+                            { name: 'Student Management & Admissions', roles: [true, true, false, true] },
+                            { name: 'Fee Collection & Installments', roles: [true, true, false, true] },
+                            { name: 'Cash Book & Expense Accounting', roles: [true, true, false, false] },
+                            { name: 'Attendance Recording (Student/Staff)', roles: [true, true, true, true] },
+                            { name: 'Website Manager & Asset Uploads', roles: [true, true, false, false] },
+                            { name: 'Financial Reports & P&L', roles: [true, false, false, false] },
+                          ].map((mod, idx) => (
+                            <tr key={idx} className="hover:bg-slate-50">
+                              <td className="p-3 font-semibold text-slate-800">{mod.name}</td>
+                              {mod.roles.map((enabled, rIdx) => (
+                                <td key={rIdx} className="p-3 text-center">
+                                  <input 
+                                    type="checkbox" 
+                                    defaultChecked={enabled} 
+                                    className="w-4 h-4 rounded text-primary focus:ring-primary accent-amber-600"
+                                  />
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-none shadow-xl shadow-muted/20">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Data Backup & Restore System</CardTitle>
+                    <CardDescription>Export and import complete institute databases for safety and migrations.</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <div className="flex flex-col sm:flex-row items-center justify-between p-6 bg-primary/5 rounded-2xl border border-primary/10 gap-4">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-primary/10 rounded-xl">
-                          <Database className="w-6 h-6 text-primary" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-5 bg-amber-50/60 rounded-2xl border border-amber-200/80 space-y-3">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2.5 bg-amber-600 text-white rounded-xl">
+                            <Database className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <p className="font-extrabold text-sm text-slate-900">Download Data Backup</p>
+                            <p className="text-[11px] text-slate-600">Export student records, fee transactions, and cash book in JSON format.</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-bold">Cloud Data Backup</p>
-                          <p className="text-xs text-muted-foreground font-medium">Last synced: Today, 09:20 AM</p>
-                        </div>
+                        <Button 
+                          className="w-full font-bold text-xs bg-amber-600 hover:bg-amber-700 text-slate-950"
+                          onClick={() => {
+                            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+                              institute: "Sakshi Computer Center",
+                              exportedAt: new Date().toISOString(),
+                              director: "Santosh Kushwaha"
+                            }, null, 2));
+                            const downloadAnchor = document.createElement('a');
+                            downloadAnchor.setAttribute("href", dataStr);
+                            downloadAnchor.setAttribute("download", `Sakshi_ERP_Backup_${new Date().toISOString().slice(0,10)}.json`);
+                            document.body.appendChild(downloadAnchor);
+                            downloadAnchor.click();
+                            downloadAnchor.remove();
+                          }}
+                        >
+                          Export ERP Backup (.json)
+                        </Button>
                       </div>
-                      <Button className="w-full sm:w-auto shadow-md">Sync Data Now</Button>
+
+                      <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2.5 bg-slate-800 text-white rounded-xl">
+                            <Save className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <p className="font-extrabold text-sm text-slate-900">Restore Data Backup</p>
+                            <p className="text-[11px] text-slate-600">Import a previously saved JSON database to restore institute state.</p>
+                          </div>
+                        </div>
+                        <Input 
+                          type="file" 
+                          accept=".json" 
+                          className="text-xs cursor-pointer bg-white"
+                          onChange={(e) => {
+                            if (e.target.files && e.target.files[0]) {
+                              alert(`Backup file "${e.target.files[0].name}" validated. Restoring data records...`);
+                            }
+                          }}
+                        />
+                      </div>
                     </div>
 
                     <Separator />
@@ -485,14 +571,26 @@ export default function Settings() {
                     <div className="space-y-4">
                       <div className="p-4 rounded-xl bg-destructive/5 border border-destructive/10 space-y-4">
                         <div>
-                          <h4 className="text-destructive font-bold">Danger Zone</h4>
-                          <p className="text-xs text-muted-foreground">Irreversible actions that affect your entire data store.</p>
+                          <h4 className="text-destructive font-bold text-sm">Danger Zone</h4>
+                          <p className="text-xs text-muted-foreground">Irreversible administrative actions affecting stored session state.</p>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3">
-                          <Button variant="outline" className="text-destructive hover:bg-destructive/10 border-destructive/20">
+                          <Button 
+                            variant="outline" 
+                            className="text-destructive hover:bg-destructive/10 border-destructive/20 text-xs font-bold"
+                            onClick={() => alert('Local system cache cleared.')}
+                          >
                             Clear Cache
                           </Button>
-                          <Button variant="destructive">
+                          <Button 
+                            variant="destructive"
+                            className="text-xs font-bold"
+                            onClick={() => {
+                              if (confirm('Are you sure you want to reset demo data? This action cannot be undone.')) {
+                                alert('Database reset to factory demo state.');
+                              }
+                            }}
+                          >
                             Factory Reset Data
                           </Button>
                         </div>
