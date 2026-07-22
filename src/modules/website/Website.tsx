@@ -12,7 +12,17 @@ import {
   Monitor,
   BookOpen,
   Award,
-  Globe
+  Globe,
+  User,
+  UserCheck,
+  Zap,
+  Wifi,
+  CheckCircle,
+  Sun,
+  Droplets,
+  Camera,
+  FileText,
+  Type
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { INITIAL_WEBSITE_CONFIG } from './mockData';
@@ -40,28 +50,36 @@ export default function Website() {
             {config.header.logo ? (
               <img src={config.header.logo} alt="Logo" className="w-10 h-10 object-contain" referrerPolicy="no-referrer" />
             ) : (
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
+              <div className="w-10 h-10 bg-[#0f2557] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#0f2557]/20">
                 <Computer className="w-6 h-6" />
               </div>
             )}
-            <span className="text-xl font-bold tracking-tight text-primary">
-              {config.header.title}
-            </span>
+            <div className="flex flex-col">
+              <span className="text-base sm:text-lg font-black tracking-tight text-[#0f2557] leading-none uppercase">
+                {config.header.title}
+              </span>
+              <span className="text-[10px] font-black text-amber-600 tracking-wider uppercase mt-0.5">
+                CENTER CODE ASI 6281
+              </span>
+            </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             {config.header.menu.map((item) => (
               <a 
                 key={item.label} 
                 href={item.link} 
-                className="text-sm font-semibold hover:text-primary transition-colors uppercase tracking-widest"
+                className="text-xs lg:text-sm font-bold text-slate-700 hover:text-[#0f2557] transition-colors uppercase tracking-wider"
               >
                 {item.label}
               </a>
             ))}
-            <Button className="rounded-full px-6 shadow-lg shadow-primary/20">
-              Enroll Now
-            </Button>
+            <a 
+              href="tel:9893883172" 
+              className="bg-[#1e3a8a] hover:bg-[#1d4ed8] text-white rounded-xl px-5 py-2.5 text-xs font-black uppercase tracking-wider shadow-lg transition-all"
+            >
+              Contact for Admission
+            </a>
           </div>
 
           <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -149,8 +167,8 @@ export default function Website() {
             </ul>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-800 text-center text-xs opacity-60">
-          <p>© 2026 {config.header.title}. All rights reserved.</p>
+        <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-800 text-center text-xs sm:text-sm font-medium text-slate-400">
+          <p>{config.footer.copyright || '© 2026 Sakshi Computer Institute. All rights reserved. Developed by Digital Communique Private Limited.'}</p>
         </div>
       </footer>
     </div>
@@ -161,12 +179,20 @@ function SectionRenderer({ section, config }: { section: WebsiteSection, config:
   switch (section.type) {
     case 'hero':
       return <HeroSection section={section} />;
+    case 'why-us':
+      return <WhyUsSection section={section} />;
+    case 'facilities':
+      return <FacilitiesSection section={section} />;
+    case 'dca-pgdca':
+      return <DcaPgdcaSection section={section} />;
     case 'about':
       return <AboutSection section={section} />;
     case 'courses':
       return <CoursesSection section={section} />;
     case 'contact':
       return <ContactSection section={section} />;
+    case 'admissions-banner':
+      return <AdmissionsBannerSection section={section} />;
     case 'slider':
       return <SliderSection section={section} />;
     case 'gallery':
@@ -740,89 +766,322 @@ function CoursesSection({ section }: { section: WebsiteSection }) {
   );
 }
 
+function WhyUsSection({ section }: { section: WebsiteSection }) {
+  const cards = [
+    {
+      title: 'Practical Computer Training',
+      desc: 'Hands-on lab sessions with one computer per student, not just theory.',
+      icon: '🖱️',
+    },
+    {
+      title: 'Experienced Guidance',
+      desc: 'Qualified, experienced instructors guiding every student individually.',
+      icon: '👨‍🏫',
+    },
+    {
+      title: 'Modern Computer Lab',
+      desc: 'Latest-configuration systems with full networking and internet access.',
+      icon: '🖥️',
+    },
+    {
+      title: 'Career Support',
+      desc: '100% job assistance and career-focused guidance throughout the course.',
+      icon: '💼',
+    },
+    {
+      title: 'Student-Friendly Learning',
+      desc: 'English and Hindi medium teaching in a comfortable, supportive environment.',
+      icon: '🤝',
+    },
+    {
+      title: 'Skill Development',
+      desc: 'Personality development classes alongside technical training.',
+      icon: '📈',
+    },
+  ];
+
+  return (
+    <section className="py-16 md:py-24 px-6 bg-[#f4f7fc]" id="why-us">
+      <div className="max-w-7xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-blue-100/80 text-blue-800 text-xs font-black tracking-widest uppercase">
+            {section.subtitle || 'WHY CHOOSE US'}
+          </span>
+          <h2 className="text-3xl md:text-5xl font-black text-[#0f2557] tracking-tight">
+            {section.title || 'What Makes Sakshi Different'}
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {cards.map((c, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.08 }}
+              className="relative bg-white rounded-3xl p-8 shadow-sm border border-slate-100/80 hover:shadow-xl transition-all duration-300 group overflow-hidden"
+            >
+              <div className="absolute top-0 inset-x-0 h-1.5 bg-amber-400 rounded-t-3xl" />
+              <div className="w-12 h-12 rounded-2xl bg-amber-50/80 border border-amber-100/80 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                {c.icon}
+              </div>
+              <h3 className="text-lg md:text-xl font-bold text-[#0f2557] mb-2 leading-snug">
+                {c.title}
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                {c.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FacilitiesSection({ section }: { section: WebsiteSection }) {
+  const facilities = [
+    { title: 'Computer Lab with Latest Configuration & Networking', icon: Monitor },
+    { title: 'One Computer per Student', icon: User },
+    { title: 'English & Hindi Medium Instruction', icon: BookOpen },
+    { title: 'English Tutorial Classes', icon: Type },
+    { title: 'Separate, Experienced Lab Instructor', icon: UserCheck },
+    { title: 'Library with Study Room', icon: FileText },
+    { title: 'Online UPS / Uninterrupted Power Backup', icon: Zap },
+    { title: 'Internet Facility', icon: Wifi },
+    { title: '100% Job Assistance', icon: CheckCircle },
+    { title: 'Personality Development Classes', icon: Sun },
+    { title: 'Clean Drinking Water', icon: Droplets },
+    { title: 'CCTV Surveillance', icon: Camera },
+    { title: 'Free CPCT Coaching', icon: Award },
+  ];
+
+  return (
+    <section className="py-16 md:py-24 px-6 bg-[#f4f7fc]" id="facilities">
+      <div className="max-w-7xl mx-auto space-y-10">
+        <div className="text-center space-y-3 max-w-3xl mx-auto">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-blue-100/80 text-blue-800 text-xs font-black tracking-widest uppercase">
+            OUR FACILITIES
+          </span>
+          <h2 className="text-3xl md:text-5xl font-black text-[#0f2557] tracking-tight">
+            {section.title || 'Everything a Student Needs to Learn Well'}
+          </h2>
+          <p className="text-sm md:text-base text-slate-600 font-medium leading-relaxed">
+            {section.subtitle || 'From a fully networked computer lab to free CPCT coaching, every facility is built around student success.'}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {facilities.map((f, idx) => {
+            const IconComp = f.icon;
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: idx * 0.04 }}
+                className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition-shadow min-h-[130px]"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#1d3557] text-white flex items-center justify-center mb-4 shrink-0 shadow-sm">
+                  <IconComp className="w-5 h-5" />
+                </div>
+                <h4 className="text-sm font-extrabold text-[#0f2557] leading-snug">
+                  {f.title}
+                </h4>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DcaPgdcaSection({ section }: { section: WebsiteSection }) {
+  const otherCourses = [
+    'B.A.', 'B.Sc.', 'B.Com.', 'BSW', 'B.Com CS', 'BSC.CS',
+    'MA', 'M.Sc.', 'M.Com', 'MSC.CS', 'M.Lib.', 'MSW'
+  ];
+
+  return (
+    <section className="py-16 md:py-24 px-6 bg-[#f4f7fc]" id="admissions">
+      <div className="max-w-7xl mx-auto space-y-12">
+        <div className="text-center space-y-3 max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-black text-[#0f2557] tracking-tight">
+            {section.title || 'DCA & PGDCA — Regular Classes Running'}
+          </h2>
+          <p className="text-sm md:text-base text-slate-600 font-medium leading-relaxed">
+            {section.subtitle || 'Both programs follow the curriculum of Makhanlal Chaturvedi University and are valid across all government job requirements.'}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* DCA Card */}
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            className="relative bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-slate-100 flex flex-col justify-between space-y-6 overflow-hidden"
+          >
+            <div className="flex items-start justify-between">
+              <div className="space-y-1">
+                <h3 className="text-4xl font-black text-[#0f2557] tracking-tight">DCA</h3>
+                <p className="text-sm font-bold text-slate-700">
+                  Eligibility: <span className="text-blue-700 font-extrabold">12th Pass</span>
+                </p>
+              </div>
+              <span className="px-3.5 py-1.5 rounded-full bg-[#0f2557] text-white text-xs font-black tracking-wider shadow-sm">
+                50 Seats
+              </span>
+            </div>
+
+            <p className="text-sm md:text-base text-slate-600 font-medium leading-relaxed">
+              Diploma in Computer Application — covers computer fundamentals through practical, job-ready application skills.
+            </p>
+
+            <div>
+              <a 
+                href="#contact" 
+                className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 text-sm font-black tracking-wide group"
+              >
+                Enquire Now <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
+          </motion.div>
+
+          {/* PGDCA Card */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            className="relative bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-slate-100 flex flex-col justify-between space-y-6 overflow-hidden"
+          >
+            <div className="flex items-start justify-between">
+              <div className="space-y-1">
+                <h3 className="text-4xl font-black text-[#0f2557] tracking-tight">PGDCA</h3>
+                <p className="text-sm font-bold text-slate-700">
+                  Eligibility: <span className="text-blue-700 font-extrabold">Graduate</span>
+                </p>
+              </div>
+              <span className="px-3.5 py-1.5 rounded-full bg-[#0f2557] text-white text-xs font-black tracking-wider shadow-sm">
+                50 Seats
+              </span>
+            </div>
+
+            <p className="text-sm md:text-base text-slate-600 font-medium leading-relaxed">
+              Post Graduate Diploma in Computer Application — advanced computer skills to take your career further.
+            </p>
+
+            <div>
+              <a 
+                href="#contact" 
+                className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 text-sm font-black tracking-wide group"
+              >
+                Enquire Now <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Admission Assistance */}
+        <div className="pt-8 text-center space-y-6">
+          <h4 className="text-base md:text-lg font-black text-[#0f2557]">
+            Admission & Examination Form Assistance Also Available For
+          </h4>
+          <div className="flex flex-wrap justify-center gap-2.5 max-w-4xl mx-auto">
+            {otherCourses.map((c, i) => (
+              <span 
+                key={i} 
+                className="px-4 py-2 bg-white rounded-xl border border-slate-200 text-xs font-black text-[#0f2557] shadow-sm hover:border-blue-500 hover:text-blue-700 transition-all cursor-default"
+              >
+                {c}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ContactSection({ section }: { section: WebsiteSection }) {
   return (
-    <section className="py-12 md:py-20 px-6 bg-slate-50" id="contact">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-[2rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border border-slate-100">
-          <div className="lg:w-1/2 p-8 md:p-16 space-y-8 md:space-y-10 bg-primary text-white">
-            <div className="space-y-4">
-              <h2 className="text-2xl md:text-4xl font-black tracking-tight uppercase leading-none italic">
-                {section.title}
-              </h2>
-              <p className="text-primary-foreground/80 text-base md:text-lg font-medium">
-                {section.subtitle}
-              </p>
-            </div>
-            
-            <div className="space-y-4 md:space-y-6">
-              <div className="flex items-center gap-4 group">
-                <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-sm group-hover:bg-white/20 transition-colors">
-                  <Phone className="w-5 h-5 md:w-7 md:h-7" />
-                </div>
-                <div className="space-y-0.5">
-                  <p className="text-[9px] md:text-xs font-bold uppercase tracking-widest opacity-60">Call Us</p>
-                  <p className="text-lg md:text-xl font-bold">+91 9926654640</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 group">
-                <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-sm group-hover:bg-white/20 transition-colors">
-                  <Mail className="w-5 h-5 md:w-7 md:h-7" />
-                </div>
-                <div className="space-y-0.5">
-                  <p className="text-[9px] md:text-xs font-bold uppercase tracking-widest opacity-60">Email</p>
-                  <p className="text-base md:text-xl font-bold truncate">info@sakshicomputer.com</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 group">
-                <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-sm group-hover:bg-white/20 transition-colors">
-                  <Globe className="w-5 h-5 md:w-7 md:h-7" />
-                </div>
-                <div className="space-y-0.5">
-                  <p className="text-[9px] md:text-xs font-bold uppercase tracking-widest opacity-60">Website</p>
-                  <p className="text-lg md:text-xl font-bold">sakshicomputer.com</p>
-                </div>
-              </div>
-            </div>
+    <section className="py-16 md:py-24 px-6 bg-[#f4f7fc]" id="contact">
+      <div className="max-w-7xl mx-auto space-y-10">
+        <div className="text-center space-y-3 max-w-3xl mx-auto">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-blue-100/80 text-blue-800 text-xs font-black tracking-widest uppercase">
+            CONTACT US
+          </span>
+          <h2 className="text-3xl md:text-5xl font-black text-[#0f2557] tracking-tight">
+            {section.title || 'Get in Touch'}
+          </h2>
+          <p className="text-sm md:text-base text-slate-600 font-medium leading-relaxed">
+            {section.subtitle || 'Visit us or reach out for admission and examination form assistance.'}
+          </p>
+        </div>
 
-            <div className="pt-4 md:pt-6">
-              <Button 
-                size="lg" 
-                className="w-full h-14 md:h-16 rounded-xl bg-white text-primary hover:bg-slate-100 text-base md:text-lg font-black uppercase shadow-xl"
-                onClick={() => handleCTA('call', '+919926654640')}
-              >
-                Enroll Now
-              </Button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Phone Card */}
+          <div className="bg-white rounded-3xl p-8 text-center shadow-md border border-slate-100 flex flex-col items-center justify-center space-y-4">
+            <div className="w-14 h-14 rounded-full bg-[#1d3557] text-white flex items-center justify-center shadow-md">
+              <Phone className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-[#0f2557]">Phone</h3>
+            <div className="flex flex-col gap-1 text-sm font-extrabold text-blue-700">
+              <a href="tel:9893883172" className="hover:underline">9893883172</a>
+              <a href="tel:9926654640" className="hover:underline">9926654640</a>
             </div>
           </div>
 
-          <div className="lg:w-1/2 min-h-[400px] md:min-h-[500px] relative transition-all duration-700 bg-slate-100">
-            {/* Mock Map View */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-8 md:p-12 text-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 md:mb-8 animate-bounce transition-all">
-                <MapPin className="w-8 h-8 md:w-10 md:h-10" />
-              </div>
-              <h3 className="text-2xl md:text-3xl font-black text-slate-900 mb-2 md:mb-4 uppercase italic">Visit Us</h3>
-              <p className="text-sm md:text-base text-slate-500 font-medium mb-6 md:mb-8 max-w-sm leading-relaxed px-4 md:px-6">
-                Come and explore our campus, meet our faculty, and experience our learning environment.
-              </p>
-              
-              <div className="p-5 md:p-6 bg-white rounded-2xl shadow-lg border border-slate-100 text-left w-full max-w-sm mb-6 md:mb-8">
-                 <p className="text-[10px] md:text-xs font-bold text-primary uppercase tracking-widest mb-1 md:mb-2">Campus Address</p>
-                 <p className="text-sm md:text-base font-bold text-slate-800 italic leading-snug">
-                   Sakshi Computer Institute (ASI 6281), Near Jain Mandir, Main Road Mohindra, Panna (M.P.)
-                 </p>
-              </div>
-
-              <Button 
-                variant="outline" 
-                className="border-slate-300 rounded-xl px-10 md:px-12 h-12 md:h-14 text-sm md:text-base font-bold uppercase tracking-widest hover:bg-primary hover:text-white hover:border-primary transition-all shadow-lg"
-                onClick={() => handleCTA('map', 'https://goo.gl/maps')}
-              >
-                Get Directions
-              </Button>
+          {/* Email Card */}
+          <div className="bg-white rounded-3xl p-8 text-center shadow-md border border-slate-100 flex flex-col items-center justify-center space-y-4">
+            <div className="w-14 h-14 rounded-full bg-[#1d3557] text-white flex items-center justify-center shadow-md">
+              <Mail className="w-6 h-6" />
             </div>
+            <h3 className="text-lg font-bold text-[#0f2557]">Email</h3>
+            <a href="mailto:sakshicomputernawai@gmail.com" className="text-sm font-extrabold text-blue-700 hover:underline break-all">
+              sakshicomputernawai@gmail.com
+            </a>
           </div>
+
+          {/* Address Card */}
+          <div className="bg-white rounded-3xl p-8 text-center shadow-md border border-slate-100 flex flex-col items-center justify-center space-y-4">
+            <div className="w-14 h-14 rounded-full bg-[#1d3557] text-white flex items-center justify-center shadow-md">
+              <MapPin className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-[#0f2557]">Address</h3>
+            <p className="text-xs md:text-sm font-medium text-slate-600 leading-relaxed">
+              Rest House Ke Paas, Katni Road, Pawai, District Panna, Madhya Pradesh
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AdmissionsBannerSection({ section }: { section: WebsiteSection }) {
+  return (
+    <section className="py-16 md:py-20 px-6 bg-[#0f3b8e] text-white text-center relative overflow-hidden">
+      <div className="max-w-4xl mx-auto space-y-8 relative z-10">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
+          {section.title || 'Admissions Are Now Open'}
+        </h2>
+
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <span className="px-5 py-2 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs sm:text-sm font-bold flex items-center gap-2">
+            ⚡ Limited Seats Available
+          </span>
+          <span className="px-5 py-2 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs sm:text-sm font-bold flex items-center gap-2">
+            📋 Admission & Exam Form Assistance
+          </span>
+        </div>
+
+        <div>
+          <a
+            href="tel:9893883172"
+            className="inline-flex items-center gap-2 bg-[#f4a261] hover:bg-[#e76f51] text-slate-950 font-black text-base sm:text-lg px-8 py-4 rounded-xl shadow-2xl transition-all duration-300 hover:scale-105"
+          >
+            📞 Call Now for Admission
+          </a>
         </div>
       </div>
     </section>

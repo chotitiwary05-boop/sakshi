@@ -472,6 +472,15 @@ export default function WebsiteEditor() {
                   </div>
                 </div>
               </div>
+
+              <div className="space-y-2">
+                <Label className="text-xs uppercase tracking-widest text-muted-foreground">Copyright Notice</Label>
+                <Input 
+                  placeholder="Copyright Notice"
+                  value={config.footer.copyright || ''}
+                  onChange={(e) => setConfig({ ...config, footer: { ...config.footer, copyright: e.target.value } })}
+                />
+              </div>
               
               <Separator />
 

@@ -6,12 +6,10 @@ export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
     title: 'Sakshi Computer Institute',
     menu: [
       { label: 'Home', link: '#' },
-      { label: 'Director', link: '#director' },
-      { label: 'Branches', link: '#branches' },
-      { label: 'About Us', link: '#about' },
+      { label: 'About', link: '#about' },
       { label: 'Courses', link: '#courses' },
-      { label: 'Why Choose Us', link: '#features' },
-      { label: 'Gallery', link: '#gallery' },
+      { label: 'Facilities', link: '#facilities' },
+      { label: 'Admissions', link: '#admissions' },
       { label: 'Contact', link: '#contact' },
     ]
   },
@@ -28,13 +26,34 @@ export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
       order: 0
     },
     {
+      id: 'why-us-1',
+      type: 'why-us',
+      title: 'What Makes Sakshi Different',
+      subtitle: 'WHY CHOOSE US',
+      order: 1
+    },
+    {
+      id: 'facilities-1',
+      type: 'facilities',
+      title: 'Everything a Student Needs to Learn Well',
+      subtitle: 'From a fully networked computer lab to free CPCT coaching, every facility is built around student success.',
+      order: 2
+    },
+    {
+      id: 'dca-pgdca-1',
+      type: 'dca-pgdca',
+      title: 'DCA & PGDCA — Regular Classes Running',
+      subtitle: 'Both programs follow the curriculum of Makhanlal Chaturvedi University and are valid across all government job requirements.',
+      order: 3
+    },
+    {
       id: 'director-1',
       type: 'director-message',
       title: 'Director’s Message',
       subtitle: 'Mr. Santosh Kushwaha',
       content: 'At Sakshi Computer Institute, our mission is to empower students with practical knowledge and industry-relevant skills. We focus on building strong foundations for a successful career in IT and computer education. With experienced faculty and modern infrastructure, we ensure quality education for every student.',
       images: ['https://images.unsplash.com/photo-1519085185758-26987a15998b?auto=format&fit=crop&q=80&w=800'],
-      order: 0.2
+      order: 4
     },
     {
       id: 'branches-1',
@@ -42,44 +61,7 @@ export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
       title: 'Our Branches',
       subtitle: 'Visit our nearest campus for admissions and inquiries.',
       content: 'Mohandra Branch: Sakshi Computer Institute, Near Jain Mandir, Main Road Mohindra, Panna (M.P.)\n\nPawai Branch: Sakshi Computer Institute, Near Bus Stand, Pawai, Panna (M.P.)',
-      order: 0.3
-    },
-    {
-      id: 'slider-1',
-      type: 'slider',
-      title: 'Our Modern Campus',
-      subtitle: 'Experience world-class computer labs and facilities.',
-      images: [
-        'https://images.unsplash.com/photo-1524178232363-1fb28f74b671?auto=format&fit=crop&q=80&w=1200',
-        'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1200',
-        'https://images.unsplash.com/photo-1544652277-2f3b9c7b4169?auto=format&fit=crop&q=80&w=1200'
-      ],
-      order: 0.5
-    },
-    {
-      id: 'about-1',
-      type: 'about',
-      title: 'Who We Are',
-      subtitle: 'Sakshi Computer Institute is dedicated to providing quality computer education that bridges the gap between academic knowledge and practical skills.',
-      content: 'We are affiliated with Makhanlal Chaturvedi National University, ensuring recognized certifications and industry-relevant curriculum. Our goal is to create skilled professionals who are ready to excel in the digital and corporate world.',
-      images: ['https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800'],
-      order: 1
-    },
-    {
-      id: 'vision-1',
-      type: 'custom',
-      title: 'Mission & Vision',
-      subtitle: 'Our purpose and our promise to the digital generation.',
-      content: '### Our Mission\nTo deliver high-quality computer education that equips students with technical skills, confidence, and career readiness, enabling them to succeed in a competitive digital world.\n\n### Our Vision\nTo become a leading computer education institute known for excellence, innovation, and student success, while contributing to building a digitally empowered society.',
-      order: 2
-    },
-    {
-      id: 'features-1',
-      type: 'custom',
-      title: 'Why Choose Us?',
-      subtitle: 'What makes us different from others.',
-      content: '• Focus on practical learning\n• Career-oriented training programs\n• Supportive learning environment\n• Strong placement support\n• Modern computer lab with latest configuration systems\n• Individual system access for every student\n• English & Hindi medium teaching\n• Experienced and certified instructors\n• Free CPCT coaching\n• 100% Job Assistance\n• Personality development sessions\n• High-speed internet & power backup\n• Library with study room\n• CCTV secured campus',
-      order: 3
+      order: 5
     },
     {
       id: 'gallery-1',
@@ -87,27 +69,24 @@ export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
       title: 'Our Campus Gallery',
       subtitle: 'Take a look at our modern infrastructure and student life.',
       images: [
-        'https://ais-pre-74v4txmhsomudyklbvdw5z-134852760448.asia-southeast1.run.app/api/artifacts/artifact_1714288633.png',
-        'https://ais-pre-74v4txmhsomudyklbvdw5z-134852760448.asia-southeast1.run.app/api/artifacts/artifact_1714288634.png',
-        'https://ais-pre-74v4txmhsomudyklbvdw5z-134852760448.asia-southeast1.run.app/api/artifacts/artifact_1714288635.png',
-        'https://ais-pre-74v4txmhsomudyklbvdw5z-134852760448.asia-southeast1.run.app/api/artifacts/artifact_1714288636.png',
-        'https://ais-pre-74v4txmhsomudyklbvdw5z-134852760448.asia-southeast1.run.app/api/artifacts/artifact_1714288637.png'
+        'https://images.unsplash.com/photo-1524178232363-1fb28f74b671?auto=format&fit=crop&q=80&w=600',
+        'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=600',
+        'https://images.unsplash.com/photo-1544652277-2f3b9c7b4169?auto=format&fit=crop&q=80&w=600'
       ],
-      order: 3.5
-    },
-    {
-      id: 'courses-1',
-      type: 'courses',
-      title: 'Our Featured Courses',
-      subtitle: 'Industry-relevant curriculum designed for your success.',
-      order: 4
+      order: 6
     },
     {
       id: 'contact-1',
       type: 'contact',
       title: 'Get in Touch',
-      subtitle: 'We are here to guide you toward the right career path.',
-      order: 5
+      subtitle: 'Visit us or reach out for admission and examination form assistance.',
+      order: 7
+    },
+    {
+      id: 'admissions-banner-1',
+      type: 'admissions-banner',
+      title: 'Admissions Are Now Open',
+      order: 8
     }
   ],
   footer: {
@@ -130,6 +109,7 @@ export const INITIAL_WEBSITE_CONFIG: WebsiteConfig = {
         address: 'Sakshi Computer Institute, Near Jain Mandir, Main Road Mohindra, Panna (M.P.)',
         image: 'https://images.unsplash.com/photo-1544652277-2f3b9c7b4169?auto=format&fit=crop&q=80&w=600'
       }
-    ]
+    ],
+    copyright: '© 2026 Sakshi Computer Institute. All rights reserved. Developed by Digital Communique Private Limited.'
   }
 };

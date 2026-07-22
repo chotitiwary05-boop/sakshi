@@ -2,7 +2,7 @@ import { LucideIcon } from 'lucide-react';
 
 export interface WebsiteSection {
   id: string;
-  type: 'hero' | 'about' | 'courses' | 'contact' | 'custom' | 'slider' | 'gallery' | 'director-message' | 'branches';
+  type: 'hero' | 'about' | 'courses' | 'contact' | 'custom' | 'slider' | 'gallery' | 'director-message' | 'branches' | 'why-us' | 'facilities' | 'dca-pgdca' | 'admissions-banner';
   title: string;
   subtitle?: string;
   content?: string;
@@ -33,5 +33,6 @@ export interface WebsiteConfig {
       address?: string;
       image?: string;
     }[];
+    copyright?: string;
   };
 }

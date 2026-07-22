@@ -21,12 +21,12 @@ export default function Login({ onLogin }: LoginProps) {
     setIsLoading(true);
 
     // Hardcoded credentials for the admin panel
-    if (username === 'sadmin' && password === '12345') {
+    if (username === 'sadmin' && (password === '12345' || password === '123456')) {
        setTimeout(() => {
         setIsLoading(false);
         onLogin(true, 'sadmin');
       }, 500);
-    } else if (username === 'admin' && password === '987654') {
+    } else if (username === 'admin' && (password === '123456' || password === '987654')) {
       // Simulate network delay
       setTimeout(() => {
         setIsLoading(false);
